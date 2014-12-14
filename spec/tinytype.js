@@ -41,9 +41,26 @@ describe('The Tiny Types library', function() {
 		expect(email.value).to.equal('graham@grahamcox.co.uk');
 	    });
 	    it('Rejects an inappropriate type', function() {
-            expect(function() {
-                new Email(42);
-            }).throws();
+                expect(function() {
+                    new Email(42);
+                }).throws();
+	    });
+        });
+        describe('When we provide a validation function', function() {
+            var Email = TinyType({
+	        type: 'string',
+                validator: function(v) {
+                    return (/^.+@.+\..+$/.test(v));
+                }
+            });
+	    it('Accepts an appropriate value', function() {
+                var email = new Email('graham@grahamcox.co.uk');
+		expect(email.value).to.equal('graham@grahamcox.co.uk');
+	    });
+	    it('Rejects an inappropriate value', function() {
+                expect(function() {
+                    new Email('graham');
+                }).throws();
 	    });
         });
     });

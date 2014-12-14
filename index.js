@@ -17,6 +17,9 @@ function TinyType(definition) {
         if (valueDef.type && typeof value !== valueDef.type) {
             throw new Error('Expected a ' + valueDef.type + ' to be passed in. Got a ' + typeof value);
         }
+        if (typeof valueDef.validator === 'function' && !valueDef.validator(value)) {
+            throw new Error('Value passed in was not valid');
+        }
         Object.defineProperties(this, {
             value: {
                 configurable: false,

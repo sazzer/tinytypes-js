@@ -20,10 +20,31 @@ describe('The Tiny Types library', function() {
                 new Email();
             }).throws();
         });
+        it('Mandates that the new type is not given a value of undefined', function() {
+            expect(function() {
+                new Email(undefined);
+            }).throws();
+        });
         it('Mandates that the new type is given a single value', function() {
             expect(function() {
                 new Email('graham', 'grahamcox.co.uk');
             }).throws();
+        });
+    });
+    describe('Allows us to validate the inputs to the type', function() {
+        describe('When we specify the type of the value', function() {
+            var Email = TinyType({
+	        type: 'string'
+            });
+	    it('Accepts an appropriate type', function() {
+                var email = new Email('graham@grahamcox.co.uk');
+		expect(email.value).to.equal('graham@grahamcox.co.uk');
+	    });
+	    it('Rejects an inappropriate type', function() {
+            expect(function() {
+                new Email(42);
+            }).throws();
+	    });
         });
     });
 });

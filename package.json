@@ -1,5 +1,5 @@
 {
-  "name": "tinytypes-js",
+  "name": "tinytype",
   "version": "0.0.1",
   "description": "Implementation of Tiny Types for Javascript",
   "main": "index.js",

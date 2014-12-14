@@ -6,6 +6,9 @@
  */
 function TinyType() {
     return function(value) {
+        if (arguments.length !== 1) {
+            throw new Error('Expected exactly one argument. Got ' + arguments.length);
+        }
         Object.defineProperties(this, {
             value: {
                 configurable: false,

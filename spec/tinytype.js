@@ -15,5 +15,15 @@ describe('The Tiny Types library', function() {
             var email = new Email('graham@grahamcox.co.uk');
             expect(email.value).to.equal('graham@grahamcox.co.uk');
         });
+        it('Mandates that the new type is given a value', function() {
+            expect(function() {
+                new Email();
+            }).throws();
+        });
+        it('Mandates that the new type is given a single value', function() {
+            expect(function() {
+                new Email('graham', 'grahamcox.co.uk');
+            }).throws();
+        });
     });
 });

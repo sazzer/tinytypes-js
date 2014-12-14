@@ -1,0 +1,27 @@
+{
+  "name": "tinytypes-js",
+  "version": "0.0.1",
+  "description": "Implementation of Tiny Types for Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec --recursive spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sazzer/tinytypes-js"
+  },
+  "keywords": [
+    "types",
+    "tiny types"
+  ],
+  "author": "Graham Cox <graham@grahamcox.co.uk>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sazzer/tinytypes-js/issues"
+  },
+  "homepage": "https://github.com/sazzer/tinytypes-js",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1"
+  }
+}

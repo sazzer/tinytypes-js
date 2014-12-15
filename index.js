@@ -10,11 +10,21 @@ function TinyType(definition) {
     var valueDef = definition || {};
 
     return function(value) {
-        if (arguments.length !== 1) {
+        if (arguments.length > 1) {
             throw new Error('Expected exactly one argument. Got ' + arguments.length);
         }
         if (typeof value === 'undefined') {
-            throw new Error('Expected a value to be passed in. Got undefined');
+            switch (typeof valueDef.defaultValue) {
+	        case 'undefined':
+                    throw new Error('Expected a value to be passed in. Got undefined');
+		    break;
+		case 'function':
+		    value = valueDef.defaultValue();
+		    break;
+		default:
+		    value = valueDef.defaultValue;
+		    break;
+            }
         }
         if (valueDef.type) {
             if (typeof value !== valueDef.type) {

@@ -31,6 +31,44 @@ describe('The Tiny Types library', function() {
             }).throws();
         });
     });
+    describe('Allows us to specify a default value', function() {
+        var defaultValue = new Date().toISOString();
+        var DateTime = TinyType({
+            defaultValue: defaultValue
+        });
+        it('Uses the provided value if there is one', function() {
+            var val = '2014-12-15T13:00:00Z'
+            var now = new DateTime(val);
+            expect(now.value).to.equal(val);
+        });
+        it('Uses the default if no value is passed in', function() {
+            var now = new DateTime();
+            expect(now.value).to.equal(defaultValue);
+        });
+        it('Uses the default if an undefined value is passed in', function() {
+            var now = new DateTime(undefined);
+            expect(now.value).to.equal(defaultValue);
+        });
+    });
+    describe('Allows us to specify a default function', function() {
+        var defaultValue = new Date().toISOString();
+        var DateTime = TinyType({
+            defaultValue: function() { return defaultValue; }
+        });
+        it('Uses the provided value if there is one', function() {
+            var val = '2014-12-15T13:00:00Z'
+            var now = new DateTime(val);
+            expect(now.value).to.equal(val);
+        });
+        it('Uses the default if no value is passed in', function() {
+            var now = new DateTime();
+            expect(now.value).to.equal(defaultValue);
+        });
+        it('Uses the default if an undefined value is passed in', function() {
+            var now = new DateTime(undefined);
+            expect(now.value).to.equal(defaultValue);
+        });
+    });
     describe('Allows us to validate the inputs to the type', function() {
         describe('When we specify the type of the value', function() {
             var Email = TinyType({

@@ -78,5 +78,41 @@ describe('The Tiny Types library', function() {
                 }).throws();
 	    });
         });
+        describe('When we provide a string length to match', function() {
+            var Short = TinyType({
+	        type: 'string',
+		maxLength: 3
+            });
+            var Long = TinyType({
+	        type: 'string',
+		minLength: 3
+            });
+	    it('Works under the maximum length', function() {
+	        var input = '';
+	        for (var i = 0; i <= 3; ++i) {
+		    var value = new Short(input);
+		    expect(value.value).to.equal(input);
+		    input += 'a';
+	        }
+	    });
+	    it('Rejects over the maximum length', function() {
+                expect(function() {
+                    new Short('graham');
+                }).throws();
+	    });
+	    it('Works over the minimum length', function() {
+	        var input = 'aaa';
+	        for (var i = 0; i <= 3; ++i) {
+		    var value = new Long(input);
+		    expect(value.value).to.equal(input);
+		    input += 'a';
+	        }
+	    });
+	    it('Rejects under the minimum length', function() {
+                expect(function() {
+                    new Long('gc');
+                }).throws();
+	    });
+        });
     });
 });

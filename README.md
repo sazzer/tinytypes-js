@@ -20,7 +20,14 @@ Yes it does. It's not all that well know, but Javascript has an *instanceof* ope
 This is all perfectly achievable right now, but a bit on the verbose side, as follows:
 
     function Username(value) {
-        this.value = value;
+        Object.defineProperties(this, {
+            value: {
+                configurable: false,
+                enumerable: true,
+                writable: false,
+                value: value
+            }
+        });
     }
 
     function registerUser(username, realName, email) {
@@ -34,7 +41,7 @@ If we pass in anything but a Username object to the above, then we will get an e
 So what does this library give me?
 ----------------------------------
 
-Realistically, nothing. However, it does make life a lot easier for the implementation of these types. It makes use of Object.defineProperties to ensure that the value property on our new Tiny Type is read-only, and it also guarantees that the new Tiny Type is constructed with only a single parameter. The above becomes the following:
+In the simple case, nothing. However, it does make life a lot easier for the implementation of these types. It makes use of Object.defineProperties to ensure that the value property on our new Tiny Type is read-only, and it also guarantees that the new Tiny Type is constructed with only a single parameter. The above becomes the following:
 
     var Username = TinyType();
 
@@ -44,3 +51,76 @@ instead of the full function definition. The above also provides the following:
     var username = new Username('a', 'b'); // Throws - needs exactly one parameter
 
 And of course, we can use *instanceof* to ensure the type of our username parameter matches the Username type.
+
+On top of the simple case though, Tiny Types that are defined using this library gain some extra features that - whilst not difficult to code yourself - make life even easier. To see these, keep reading.
+
+Data Validation
+---------------
+Tiny Types created by this library gain the ability to validate the input value, to ensure that it fits the requirements. Right now there are some simple validations built in for checking the data type, and for String and Number types, but there is also the ability to provide your own validation function.
+
+The following Tiny Type will only accept numbers as the parameter, and the number must be in the range 1 to 100. If it is not a number, or it is outside of this range then the constructor will throw an error.
+    var PageSize = TinyType({
+        type: 'number',
+        minValue: 1,
+        maxValue: 100
+    });
+
+    new PageSize(10); // Works
+    new PageSize('50'); // Throws - Input is a string
+    new PageSize(0); // Throws - too small
+    new PageSize(1000); // Throws - too big
+
+The following Tiny Type will only accept strings that are of the expected size. 
+
+    var Username = TinyType({
+        type: 'string',
+        minLength: 5,
+        maxLength: 30
+    });
+
+    new Username('graham'); // Works
+    new Username('gc'); // Throws - Input is too short
+    new Username('ThisIsAVeryLongUsernameThatIShouldNotUse'); // Throws - Input is too long
+
+The following Tiny Type will only accept strings that are of the expected regular expression. Note - Do NOT validate email addresses like this!
+
+    var Email = TinyType({
+        type: 'string',
+        regex: /^.+@.+\..+$/
+    });
+
+    new Email('graham@grahamcox.co.uk'); // Works
+    new Email('graham'); // Throws
+
+The following Tiny Type will provide some custom validation rules.
+
+    var Password = TinyType({
+        type: 'string', 
+		validator: function(value) {
+			return value !== 'password';
+		}
+    });
+
+	new Password('secret'); // Works
+	new Password('password'); // Fails - our custom validator enforces that this value isn't used
+
+Default Values
+--------------
+In some cases, we want to be able to store a default value if one isn't provided, instead of failing. This is unusual but not unheard of. The Tiny Types library can support a default value being either a single hard-coded value or a function that will generate a value. Regardless, this must meet any validation requirements that are imposed on the type.
+
+	var DateTime = TinyType({
+		defaultValue: function() { return new Date(); }
+	});
+
+	new DateTime(new Date(Date.parse("2014-12-15"))); // Works, storing the provided time
+	new DateTime(); // Works, storing the current time
+
+	var Page = TinyType({
+		type: 'number',
+		minValue: 0,
+		defaultValue: 0
+	});
+
+	new Page(1); // Works, storing 1
+	new Page(); // Works, storing 0
+	

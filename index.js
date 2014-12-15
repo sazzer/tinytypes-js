@@ -14,9 +14,19 @@ function TinyType(definition) {
         if (typeof value === 'undefined') {
             throw new Error('Expected a value to be passed in. Got undefined');
         }
-        if (valueDef.type && typeof value !== valueDef.type) {
-            throw new Error('Expected a ' + valueDef.type + ' to be passed in. Got a ' + typeof value);
-        }
+        if (valueDef.type) {
+            if (typeof value !== valueDef.type) {
+                throw new Error('Expected a ' + valueDef.type + ' to be passed in. Got a ' + typeof value);
+            }
+	    // Perform certain type-specific validations
+	    switch (valueDef.type) {
+	        case 'string':
+		    if (valueDef.regex && !valueDef.regex.test(value)) {
+		        throw new Error('Expected value to match regular expression: ' + valueDef.regex);
+		    }
+		    break;
+	    }
+	}
         if (typeof valueDef.validator === 'function' && !valueDef.validator(value)) {
             throw new Error('Value passed in was not valid');
         }

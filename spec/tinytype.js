@@ -63,5 +63,20 @@ describe('The Tiny Types library', function() {
                 }).throws();
 	    });
         });
+        describe('When we provide a regular expression to match', function() {
+            var Email = TinyType({
+	        type: 'string',
+                regex: /^.+@.+\..+$/
+            });
+	    it('Accepts an appropriate value', function() {
+                var email = new Email('graham@grahamcox.co.uk');
+		expect(email.value).to.equal('graham@grahamcox.co.uk');
+	    });
+	    it('Rejects an inappropriate value', function() {
+                expect(function() {
+                    new Email('graham');
+                }).throws();
+	    });
+        });
     });
 });

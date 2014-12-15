@@ -32,8 +32,16 @@ function TinyType(definition) {
                     if (typeof valueDef.maxLength === 'number' && value.length > valueDef.maxLength) {
 		        throw new Error('Expected value to be at most ' + valueDef.maxLength + ' characters long');
 		    }
-
 		    break;
+                case 'number':
+                    if (typeof valueDef.minValue === 'number' && value < valueDef.minValue) {
+		        throw new Error('Expected value to be at least ' + valueDef.minValue);
+		    }
+                    if (typeof valueDef.maxValue === 'number' && value > valueDef.maxValue) {
+		        throw new Error('Expected value to be at most ' + valueDef.maxValue);
+		    }
+		    break;
+
 	    }
 	}
         if (typeof valueDef.validator === 'function' && !valueDef.validator(value)) {

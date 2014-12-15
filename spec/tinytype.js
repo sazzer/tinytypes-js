@@ -114,5 +114,37 @@ describe('The Tiny Types library', function() {
                 }).throws();
 	    });
         });
+        describe('When we provide a number range to match', function() {
+            var Short = TinyType({
+	        type: 'number',
+		maxValue: 3
+            });
+            var Long = TinyType({
+	        type: 'number',
+		minValue: 3
+            });
+	    it('Works under the maximum value', function() {
+	        for (var i = 0; i <= 3; ++i) {
+		    var value = new Short(i);
+		    expect(value.value).to.equal(i);
+	        }
+	    });
+	    it('Rejects over the maximum length', function() {
+                expect(function() {
+                    new Short(8);
+                }).throws();
+	    });
+	    it('Works over the minimum length', function() {
+	        for (var i = 3; i <= 6; ++i) {
+		    var value = new Long(i);
+		    expect(value.value).to.equal(i);
+	        }
+	    });
+	    it('Rejects under the minimum length', function() {
+                expect(function() {
+                    new Long(2);
+                }).throws();
+	    });
+        });
     });
 });

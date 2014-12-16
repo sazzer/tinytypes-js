@@ -96,31 +96,42 @@ The following Tiny Type will provide some custom validation rules.
 
     var Password = TinyType({
         type: 'string', 
-		validator: function(value) {
-			return value !== 'password';
-		}
+        validator: function(value) {
+            return value !== 'password';
+        }
     });
 
-	new Password('secret'); // Works
-	new Password('password'); // Fails - our custom validator enforces that this value isn't used
+    new Password('secret'); // Works
+    new Password('password'); // Fails - our custom validator enforces that this value isn't used
 
 Default Values
 --------------
 In some cases, we want to be able to store a default value if one isn't provided, instead of failing. This is unusual but not unheard of. The Tiny Types library can support a default value being either a single hard-coded value or a function that will generate a value. Regardless, this must meet any validation requirements that are imposed on the type.
 
-	var DateTime = TinyType({
-		defaultValue: function() { return new Date(); }
-	});
+    var DateTime = TinyType({
+        defaultValue: function() { return new Date(); }
+    });
 
-	new DateTime(new Date(Date.parse("2014-12-15"))); // Works, storing the provided time
-	new DateTime(); // Works, storing the current time
+    new DateTime(new Date(Date.parse("2014-12-15"))); // Works, storing the provided time
+    new DateTime(); // Works, storing the current time
 
-	var Page = TinyType({
-		type: 'number',
-		minValue: 0,
-		defaultValue: 0
-	});
+    var Page = TinyType({
+        type: 'number',
+        minValue: 0,
+        defaultValue: 0
+    });
 
-	new Page(1); // Works, storing 1
-	new Page(); // Works, storing 0
-	
+    new Page(1); // Works, storing 1
+    new Page(); // Works, storing 0
+    
+Property Name
+-------------
+By default, the property name that the stored value is exposed on is 'value'. This can be overridden to any name you want as long as it's a valid Object property key simply by specifying the name as a configuration value. For example:
+
+    var Email = TinyType({
+        name: 'email'
+    });
+
+    new Email('graham@grahamcox.co.uk').email; // This is where the value is stored
+    new Email('graham@grahamcox.co.uk').value; // This is now undefined
+

@@ -31,6 +31,17 @@ describe('The Tiny Types library', function() {
             }).throws();
         });
     });
+    describe('Allows us to change the name of the property', function() {
+        var Email = TinyType({name: 'email'});
+        it('Returns the stored value on the correct property', function() {
+            var email = new Email('graham@grahamcox.co.uk');
+            expect(email.email).to.equal('graham@grahamcox.co.uk');
+        });
+        it('No longer returns the stored value on the "value" property', function() {
+            var email = new Email('graham@grahamcox.co.uk');
+            expect(email.value).to.be.undefined;
+        });
+    });
     describe('Allows us to specify a default value', function() {
         var defaultValue = new Date().toISOString();
         var DateTime = TinyType({
@@ -72,117 +83,117 @@ describe('The Tiny Types library', function() {
     describe('Allows us to validate the inputs to the type', function() {
         describe('When we specify the type of the value', function() {
             var Email = TinyType({
-	        type: 'string'
+            type: 'string'
             });
-	    it('Accepts an appropriate type', function() {
+        it('Accepts an appropriate type', function() {
                 var email = new Email('graham@grahamcox.co.uk');
-		expect(email.value).to.equal('graham@grahamcox.co.uk');
-	    });
-	    it('Rejects an inappropriate type', function() {
+        expect(email.value).to.equal('graham@grahamcox.co.uk');
+        });
+        it('Rejects an inappropriate type', function() {
                 expect(function() {
                     new Email(42);
                 }).throws();
-	    });
+        });
         });
         describe('When we provide a validation function', function() {
             var Email = TinyType({
-	        type: 'string',
+            type: 'string',
                 validator: function(v) {
                     return (/^.+@.+\..+$/.test(v));
                 }
             });
-	    it('Accepts an appropriate value', function() {
+        it('Accepts an appropriate value', function() {
                 var email = new Email('graham@grahamcox.co.uk');
-		expect(email.value).to.equal('graham@grahamcox.co.uk');
-	    });
-	    it('Rejects an inappropriate value', function() {
+        expect(email.value).to.equal('graham@grahamcox.co.uk');
+        });
+        it('Rejects an inappropriate value', function() {
                 expect(function() {
                     new Email('graham');
                 }).throws();
-	    });
+        });
         });
         describe('When we provide a regular expression to match', function() {
             var Email = TinyType({
-	        type: 'string',
+            type: 'string',
                 regex: /^.+@.+\..+$/
             });
-	    it('Accepts an appropriate value', function() {
+        it('Accepts an appropriate value', function() {
                 var email = new Email('graham@grahamcox.co.uk');
-		expect(email.value).to.equal('graham@grahamcox.co.uk');
-	    });
-	    it('Rejects an inappropriate value', function() {
+        expect(email.value).to.equal('graham@grahamcox.co.uk');
+        });
+        it('Rejects an inappropriate value', function() {
                 expect(function() {
                     new Email('graham');
                 }).throws();
-	    });
+        });
         });
         describe('When we provide a string length to match', function() {
             var Short = TinyType({
-	        type: 'string',
-		maxLength: 3
+            type: 'string',
+        maxLength: 3
             });
             var Long = TinyType({
-	        type: 'string',
-		minLength: 3
+            type: 'string',
+        minLength: 3
             });
-	    it('Works under the maximum length', function() {
-	        var input = '';
-	        for (var i = 0; i <= 3; ++i) {
-		    var value = new Short(input);
-		    expect(value.value).to.equal(input);
-		    input += 'a';
-	        }
-	    });
-	    it('Rejects over the maximum length', function() {
+        it('Works under the maximum length', function() {
+            var input = '';
+            for (var i = 0; i <= 3; ++i) {
+            var value = new Short(input);
+            expect(value.value).to.equal(input);
+            input += 'a';
+            }
+        });
+        it('Rejects over the maximum length', function() {
                 expect(function() {
                     new Short('graham');
                 }).throws();
-	    });
-	    it('Works over the minimum length', function() {
-	        var input = 'aaa';
-	        for (var i = 0; i <= 3; ++i) {
-		    var value = new Long(input);
-		    expect(value.value).to.equal(input);
-		    input += 'a';
-	        }
-	    });
-	    it('Rejects under the minimum length', function() {
+        });
+        it('Works over the minimum length', function() {
+            var input = 'aaa';
+            for (var i = 0; i <= 3; ++i) {
+            var value = new Long(input);
+            expect(value.value).to.equal(input);
+            input += 'a';
+            }
+        });
+        it('Rejects under the minimum length', function() {
                 expect(function() {
                     new Long('gc');
                 }).throws();
-	    });
+        });
         });
         describe('When we provide a number range to match', function() {
             var Short = TinyType({
-	        type: 'number',
-		maxValue: 3
+            type: 'number',
+        maxValue: 3
             });
             var Long = TinyType({
-	        type: 'number',
-		minValue: 3
+            type: 'number',
+        minValue: 3
             });
-	    it('Works under the maximum value', function() {
-	        for (var i = 0; i <= 3; ++i) {
-		    var value = new Short(i);
-		    expect(value.value).to.equal(i);
-	        }
-	    });
-	    it('Rejects over the maximum length', function() {
+        it('Works under the maximum value', function() {
+            for (var i = 0; i <= 3; ++i) {
+            var value = new Short(i);
+            expect(value.value).to.equal(i);
+            }
+        });
+        it('Rejects over the maximum length', function() {
                 expect(function() {
                     new Short(8);
                 }).throws();
-	    });
-	    it('Works over the minimum length', function() {
-	        for (var i = 3; i <= 6; ++i) {
-		    var value = new Long(i);
-		    expect(value.value).to.equal(i);
-	        }
-	    });
-	    it('Rejects under the minimum length', function() {
+        });
+        it('Works over the minimum length', function() {
+            for (var i = 3; i <= 6; ++i) {
+            var value = new Long(i);
+            expect(value.value).to.equal(i);
+            }
+        });
+        it('Rejects under the minimum length', function() {
                 expect(function() {
                     new Long(2);
                 }).throws();
-	    });
+        });
         });
     });
 });

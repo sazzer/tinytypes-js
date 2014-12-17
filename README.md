@@ -135,3 +135,25 @@ By default, the property name that the stored value is exposed on is 'value'. Th
     new Email('graham@grahamcox.co.uk').email; // This is where the value is stored
     new Email('graham@grahamcox.co.uk').value; // This is now undefined
 
+
+Multiple Properties
+-------------------
+In some circumstances it is useful to have multiple properties on a Tiny Type. This is also supported, and can be achievd by simply passing in multiple definitions to the Tiny Type method. 
+
+    var Email = TinyType({
+        name: 'username',
+        type: 'string',
+        regex: /^[^@]$/
+    }, {
+        name: 'domain',
+        type: 'string'
+    });
+
+In this case, we can construct a new instance of our Tiny Type class by either passing in multiple parameters like normal, or by passing in a single object that contains named parameters. 
+
+    new Email('graham', 'grahamcox.co.uk').username === 'graham';
+    new Email('graham', 'grahamcox.co.uk').domain === 'grahamcox.co.uk';
+    new Email({username: 'graham', domain: 'grahamcox.co.uk'}).username === 'graham';
+    new Email({username: 'graham', domain: 'grahamcox.co.uk'}).domain === 'grahamcox.co.uk';
+
+As always, these fields must pass validation, and if you use the first form then they must be in the exact same order that they were defined in the Tiny Type definition. If a name is not provided, only the first one will use a default property name of 'value'. All others must have a name.

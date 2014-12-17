@@ -196,4 +196,50 @@ describe('The Tiny Types library', function() {
         });
         });
     });
+    describe('Supports multiple fields', function() {
+        var Email = TinyType({
+                name: 'username',
+                type: 'string',
+                regex: /^[^@]+$/
+            }, {
+                name: 'domain',
+                type: 'string',
+                regex: /^[A-Za-z0-9\.]+$/,
+                defaultValue: 'grahamcox.co.uk'
+            });
+        describe('When constructing with individual parameters', function() {
+            it('Lets us construct with all fields', function() {
+                var email = new Email('graham', 'grahamcox.co.uk');
+                expect(email.username).to.equal('graham');
+                expect(email.domain).to.equal('grahamcox.co.uk');
+            });
+            it('Lets us skip fields that have defaults', function() {
+                var email = new Email('graham');
+                expect(email.username).to.equal('graham');
+                expect(email.domain).to.equal('grahamcox.co.uk');
+            });
+            it('Requires fields to pass validation', function() {
+                expect(function() {
+                    new Email('graham@grahamcox.co.uk');
+                }).throws();
+            });
+        });
+        describe('When constructing with a single object for parameters', function() {
+            it('Lets us construct with all fields', function() {
+                var email = new Email({username: 'graham', domain: 'grahamcox.co.uk'});
+                expect(email.username).to.equal('graham');
+                expect(email.domain).to.equal('grahamcox.co.uk');
+            });
+            it('Lets us skip fields that have defaults', function() {
+                var email = new Email({username: 'graham'});
+                expect(email.username).to.equal('graham');
+                expect(email.domain).to.equal('grahamcox.co.uk');
+            });
+            it('Requires fields to pass validation', function() {
+                expect(function() {
+                    new Email({username: 'graham@grahamcox.co.uk'});
+                }).throws();
+            });
+        });
+    });
 });

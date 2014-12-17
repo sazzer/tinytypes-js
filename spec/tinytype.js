@@ -61,6 +61,30 @@ describe('The Tiny Types library', function() {
             expect(now.value).to.equal(defaultValue);
         });
     });
+    describe('Allows us to specify an optional value', function() {
+        var Age = TinyType({
+            type: 'number',
+            optional: true
+        });
+        it('Should accept a value', function() {
+	    var age = new Age(18);
+	    expect(age.value).to.equal(18);
+	});
+	it('Should not reject no value', function() {
+	    var age = new Age();
+	    expect(age.value).to.be.undefined;
+	});
+	it('Should not reject undefined being passed in', function() {
+	    var age = new Age(undefined);
+	    expect(age.value).to.be.undefined;
+	});
+	it('Should reject an invalid value', function() {
+	    expect(function() {
+	        new Age('Eighteen');
+	    }).throws;
+	});
+
+    });
     describe('Allows us to specify a default function', function() {
         var defaultValue = new Date().toISOString();
         var DateTime = TinyType({

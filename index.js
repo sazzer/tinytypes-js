@@ -56,7 +56,9 @@ function TinyType() {
             if (typeof value === 'undefined') {
                 switch (typeof valueDef.defaultValue) {
                 case 'undefined':
-                    throw new Error('Expected a value to be passed in. Got undefined');
+                    if (valueDef.optional !== true) {
+                        throw new Error('Expected a value to be passed in. Got undefined');
+                    }
                     break;
                 case 'function':
                     value = valueDef.defaultValue();
@@ -66,7 +68,8 @@ function TinyType() {
                     break;
                 }
             }
-            if (valueDef.type) {
+            // By this point we have a value, or if we have Undefined it's because we're optional
+            if (typeof value !== 'undefined' && valueDef.type) {
                 if (typeof value !== valueDef.type) {
                     throw new Error('Expected a ' + valueDef.type + ' to be passed in. Got a ' + typeof value);
                 }

@@ -124,6 +124,19 @@ In some cases, we want to be able to store a default value if one isn't provided
     new Page(1); // Works, storing 1
     new Page(); // Works, storing 0
     
+Optional Values
+---------------
+Occasionally we just outright don't want to store a value. And this is fine. As such, we can choose to mark a property as optional instead, in which case if no value is passed in and no default is specified we will just store undefined. This totally skips all validation tests if we don't have a value to store, but if we do have a value then it must be valid
+
+    var Age = TinyType({
+        type: 'number',
+	optional: true
+    });
+    new Age(18); // Valid - Stores 18
+    new Age(); // Valid - Stores undefined
+    new Age(undefined); // Valid - Stores undefined
+    new Age('Three'); // Invalid
+
 Property Name
 -------------
 By default, the property name that the stored value is exposed on is 'value'. This can be overridden to any name you want as long as it's a valid Object property key simply by specifying the name as a configuration value. For example:

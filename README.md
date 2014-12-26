@@ -1,5 +1,6 @@
 tinytypes-js
 ============
+[![Build Status](https://travis-ci.org/sazzer/tinytypes-js.svg?branch=master)](https://travis-ci.org/sazzer/tinytypes-js)
 
 Implementation of Tiny Types for Javascript
 

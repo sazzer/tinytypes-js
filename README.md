@@ -1,6 +1,7 @@
 tinytypes-js
 ============
 [![Build Status](https://travis-ci.org/sazzer/tinytypes-js.svg?branch=master)](https://travis-ci.org/sazzer/tinytypes-js)
+[![Coverage Status](https://coveralls.io/repos/sazzer/tinytypes-js/badge.png?branch=master)](https://coveralls.io/r/sazzer/tinytypes-js?branch=master)
 
 Implementation of Tiny Types for Javascript
 

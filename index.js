@@ -104,11 +104,11 @@ function TinyType() {
                 enumerable: true,
                 writable: false,
                 value: value
-            }
+            };
         }
 
         Object.defineProperties(this, properties);
     };
-};
+}
 
 module.exports = TinyType;

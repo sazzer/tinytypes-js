@@ -1,7 +1,5 @@
 'use strict';
 
-var util = require('util');
-
 /**
  * Function to generate a new class to be used as a Tiny Type
  * @return the constructor for the new type
@@ -38,9 +36,9 @@ function TinyType() {
                 inputs[index] = data[key];
             });
         } else {
-            for (var i = 0; i < valueDefs.length; ++i) {
-                if (arguments.length > i) {
-                    inputs.push(arguments[i]);
+            for (var valueDefId = 0; valueDefId < valueDefs.length; ++valueDefId) {
+                if (arguments.length > valueDefId) {
+                    inputs.push(arguments[valueDefId]);
                 } else {
                     inputs.push(undefined);
                 }
@@ -49,9 +47,9 @@ function TinyType() {
 
         var properties = {};
 
-        for (var i = 0; i < inputs.length; ++i) {
-            var value = inputs[i],
-                valueDef = valueDefs[i];
+        for (var inputId = 0; inputId < inputs.length; ++inputId) {
+            var value = inputs[inputId],
+                valueDef = valueDefs[inputId];
 
             if (typeof value === 'undefined') {
                 switch (typeof valueDef.defaultValue) {
@@ -111,6 +109,6 @@ function TinyType() {
 
         Object.defineProperties(this, properties);
     };
-}
+};
 
 module.exports = TinyType;
